@@ -20,7 +20,7 @@ class MainDirectoryReader():
             raise: Exception("the object type that should be passed to the change_dir_path cab be string or Path")
 
     def create_file_list(self):
-        ''' return the list of files contained into the directory specified '''
+        ''' return the list of files contained into the directory specified by the path '''
 
         if(not self.dirPath.exists() or not self.dirPath.is_dir()):
             raise: Exception("impossible to open the directory ",self.pathname)
@@ -31,7 +31,7 @@ class MainDirectoryReader():
 
     def get_file_list(self):
         if (len(self.file_list) == 0):
-            create_file_list
+            create_file_list()
         
         return self.file_list
         

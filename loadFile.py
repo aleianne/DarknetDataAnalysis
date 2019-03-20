@@ -14,7 +14,7 @@ class LoadFile():
 
     def check_file():
 
-        if (self.filepath.exists() and self.filepath.is_dir())
+        if (self.filepath.exists() and self.filepath.is_file())
             return True
         else: 
             return False
