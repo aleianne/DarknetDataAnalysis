@@ -1,18 +1,32 @@
 import numpy as np 
 import matplotlib.pyplot as plt
+
 from os.path import expanduser
-
 from mainDirReader import MainDirReader
+from storeResults import StoreResults
 
-def main_script():
-    print("ciao")
-
-
-def create_new_plot():
+'''def create_new_plot():
     plt.plot([1, 2, 3], [9, 89, 10])
     plt.ylabel('y-axis')
     plt.xlabel('x-axis')
-    plt.show()
+    plt.show() '''
+
+
+def analyze_single_res_dir(fileList, storeRes):
+    ''' pass as argument to this function the list of the file contained into a single directory '''
+
+    for f in fileList:
+        analyze_single_res_file(f, storeRes)
+
+def analyze_single_res_file(file1, storeRes):
+    ''' this function should create a new dataframe for the file passed as argument 
+        also pass as argument the store res object, in order to retrieve the data from the memory'''
+
+    # return the filaname from the path object
+    filename = file1.as_posix()
+    resDataFrame = pd.read_csv(filename, sep='\t')
+
+
 
 
 def begin_analysis():
@@ -35,6 +49,9 @@ def begin_analysis():
     gold_prediction = LoadGoldenPrediction("golden_prediction.csv", stuck-atDirPath)
     goldPredDF gold_prediction.get_gpred_dataframe()
 
+    # create a new store results object that should contains the informations about the dataframe received
+    store_results = StoreResults(goldPredDF)
+
     # check if the result directories exists
     if (stuck-atDirPath.exists() and stuck-atDirPath.is_dir()):
 
@@ -44,7 +61,6 @@ def begin_analysis():
 
             # get the file contained into the directory
             dirReader = MainDirectoryReader(new_path)
-
             file_list = dirReader.get_file_list()
             
 
@@ -54,4 +70,5 @@ def begin_analysis():
     
 
 if __name__ == "__main__":
-    main_script()
+    #main_script()
+    begin_analysis()

@@ -26,7 +26,9 @@ class LoadGoldenPrediction(LoadFile):
         self.goldPredDF = pd.read_csv(filepath, sep='\t')
         # rename the image name column
         self.goldPredDF['image name'] = self.goldPredDF['image name'].map(image_renaming)
-        
+        # set the image name as the index of the datafram  in order to speed up the image retrieval
+        self.goldPredDF = self.goldPredDF.set_index('image name')
+
     def get_gpred_dataframe(self):
         return self.goldPredDF
 
