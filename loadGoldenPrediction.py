@@ -1,9 +1,12 @@
 from loadFile import LoadFile
+
 import pandas as pd
+
 
 def image_renaming(name):
     splits = name.split('.')
     return splits[0]
+
 
 class LoadGoldenPrediction(LoadFile):
 
@@ -14,9 +17,9 @@ class LoadGoldenPrediction(LoadFile):
     def load_data_frame(self):
         exists = self.check_file_existence()
 
-        if (exists == True):
+        if exists:
             print("the file exists")
-        else 
+        else:
             print("the file doesn't exists")
             return 
 
