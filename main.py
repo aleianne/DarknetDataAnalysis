@@ -1,10 +1,11 @@
 import pandas as pd
+import argparse
 
 from pathlib import Path
 from os.path import expanduser
 from mainDirReader import MainDirectoryReader
-from storeResults import StoreResults
 from loadGoldenPrediction import LoadGoldenPrediction
+
 
 '''def create_new_plot():
     plt.plot([1, 2, 3], [9, 89, 10])
@@ -13,37 +14,30 @@ from loadGoldenPrediction import LoadGoldenPrediction
     plt.show() '''
 
 
-def analyze_single_res_dir(fileList, storeRes):
+def analyze_single_res_dir(file_list, store_res):
     ''' pass as argument to this function the list of the file contained into a single directory '''
 
-    for f in fileList:
-        analyze_single_res_file(f, storeRes)
+    for f in file_list:
+        analyze_single_res_file(f, store_res)
 
 
-def analyze_single_res_file(file1, storeRes):
-    ''' this function should create a new dataframe for the file passed as argument 
-        also pass as argument the store res object, in order to retrieve the data from the memory'''
+def analyze_single_res_file(file1, store_res):
+    '''this function should create a new dataframe for the file passed as argument
+    also pass as argument the store res object, in order to retrieve the data from the memory '''
 
     # return the filaname from the path object
     filename = file1.as_posix()
     resDataFrame = pd.read_csv(filename, sep='\t')
 
 
-def begin_analysis():
+def begin_analysis(dir_list, dir_root):
     ''' this is the entry point of the analysis '''
 
     # define configuration data about the result directory
     home = expanduser("~")
     home_dir_path = Path(home)
 
-    documents_dir_path = home_dir_path / "documents"
-    stuck_at_dir_path = documents_dir_path / "s-a-sim"
-
-    # define a new list that contains the sim result list
-    dir_list = []
-    for i in range(1, 8):
-        dir_name = "dir_" + str(i)
-        dir_list.append(dir_name)
+    stuck_at_dir_path = home_dir_path / dir_root
 
     # load the golden prediction file
     gold_prediction = LoadGoldenPrediction("golden_prediction.csv", stuck_at_dir_path)
@@ -69,5 +63,16 @@ def begin_analysis():
     
 
 if __name__ == "__main__":
-    # main_script()
+
+    arg_parser = argparse.ArgumentParser()
+
+    arg_parser.add_argument("root_dir", help="<root-dir> set the root directory taken as starting point for all the "
+                                             "evaluation")
+    arg_parser.add_argument("--dir", nargs="+", help="<--dir> set the list of directory", required=True)
+
+    # parse the command line arguments
+    arg = arg_parser.parse_args()
+    dir_list = arg_parser.dir
+    root_dir = arg_parser.root_dir
+
     begin_analysis()

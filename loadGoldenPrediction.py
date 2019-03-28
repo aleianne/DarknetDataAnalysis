@@ -15,7 +15,7 @@ class LoadGoldenPrediction(LoadFile):
         self.goldPredDF = None
     
     def load_data_frame(self):
-        exists = self.check_file_existence()
+        exists = super(LoadGoldenPrediction, self).check_file()
 
         if exists:
             print("the file exists")

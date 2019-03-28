@@ -13,11 +13,11 @@ class LoadFile:
             raise Exception("the type of object path ins not known")
 
         self.filename = filename
-        self.filepath = self.path / filename
+        self.file_path = self.path / filename
 
     def check_file(self):
 
-        if self.filepath.exists() and self.filepath.is_file():
+        if self.file_path.exists() and self.file_path.is_file():
             return True
         else: 
             return False
