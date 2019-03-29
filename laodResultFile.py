@@ -1,6 +1,7 @@
 from loadFile import LoadFile
 import pandas as pd
 
+
 class LoadResultFile(LoadFile):
 
     def __init__(self, filename, path):
@@ -10,10 +11,10 @@ class LoadResultFile(LoadFile):
     def create_new_result_dataframe(self):
 
         # check if the file exists
-        if (self.check_file()):
+        if self.check_file():
             print("ok the file exists")
         else:
-            raise: Exception("impossible to open the file because it doesn't exist")
+            raise Exception("impossible to open the file because it doesn't exist")
 
         # load the new data frame using pandas
         # todo controllare se il file in input contiene l'header e a quale riga cominciano i dati

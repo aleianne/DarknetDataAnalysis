@@ -15,23 +15,23 @@ from loadGoldenPrediction import LoadGoldenPrediction
 
 
 def analyze_single_res_dir(file_list, store_res):
-    ''' pass as argument to this function the list of the file contained into a single directory '''
+    """ pass as argument to this function the list of the file contained into a single directory """
 
     for f in file_list:
         analyze_single_res_file(f, store_res)
 
 
 def analyze_single_res_file(file1, store_res):
-    '''this function should create a new dataframe for the file passed as argument
-    also pass as argument the store res object, in order to retrieve the data from the memory '''
+    """ this function should create a new data frame for the file passed as argument
+    also pass as argument the store res object, in order to retrieve the data from the memory """
 
     # return the filaname from the path object
     filename = file1.as_posix()
-    resDataFrame = pd.read_csv(filename, sep='\t')
+    res_data_frame = pd.read_csv(filename, sep='\t')
 
 
 def begin_analysis(dir_list, dir_root):
-    ''' this is the entry point of the analysis '''
+    """ this is the entry point of the analysis """
 
     # define configuration data about the result directory
     home = expanduser("~")
@@ -41,10 +41,10 @@ def begin_analysis(dir_list, dir_root):
 
     # load the golden prediction file
     gold_prediction = LoadGoldenPrediction("golden_prediction.csv", stuck_at_dir_path)
-    goldPredDF = gold_prediction.get_gpred_dataframe()
+    gold_pred_df = gold_prediction.get_gpred_dataframe()
 
     # create a new store results object that should contains the informations about the dataframe received
-    # store_results = StoreResults(goldPredDF)
+    # store_results = StoreResults(gold_pred_df)
 
     # check if the result directories exists
     if stuck_at_dir_path.exists() and stuck_at_dir_path.is_dir():
