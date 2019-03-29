@@ -28,7 +28,7 @@ class LoadGoldenPrediction(LoadFile):
         if super(LoadGoldenPrediction, self).check_file():
             print("the file exists")
         else:
-            # if is not possible to find the golden prediction exception throw a new FileNotFoundError
+            # if is not possible to find the golden prediction ex throw a new FileNotFoundError
             raise FileNotFoundError
 
         # load the new data frame that contains the golden predictions

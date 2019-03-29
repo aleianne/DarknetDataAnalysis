@@ -5,6 +5,7 @@ from pathlib import Path
 from os.path import expanduser
 from mainDirReader import MainDirectoryReader
 from loadGoldenPrediction import LoadGoldenPrediction
+from storeResults import StoreResults
 
 
 '''def create_new_plot():
@@ -48,18 +49,21 @@ def begin_analysis(args_data):
     gold_pred_df = gold_prediction.get_gpred_dataframe()
 
     # create a new store results object that should contains the information about the data frame received
-    # store_results = StoreResults(gold_pred_df)
+    store_results = StoreResults(gold_pred_df)
 
     # check if the result directories exists
     if stuck_at_dir_path.exists() and stuck_at_dir_path.is_dir():
 
         for single_path in dir_list:
-            # generate a new path
+            # generate a new path for every entry into the dir_list
             new_path = stuck_at_dir_path / single_path / "sim_results"
 
             # get the file contained into the directory
             dir_reader = MainDirectoryReader(new_path)
             file_list = dir_reader.get_file_list()
+
+            # pass the file list contained into the directory to the analyze dir function
+            analyze_single_res_dir(file_list, store_results)
 
     else:
         print("the path specified is not valid")
