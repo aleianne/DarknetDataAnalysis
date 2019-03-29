@@ -8,42 +8,46 @@ from loadGoldenPrediction import LoadGoldenPrediction
 
 
 '''def create_new_plot():
-    plt.plot([1, 2, 3], [9, 89, 10])
-    plt.ylabel('y-axis')
-    plt.xlabel('x-axis')
-    plt.show() '''
+        plt.plot([1, 2, 3], [9, 89, 10])
+        plt.ylabel('y-axis')
+        plt.xlabel('x-axis')
+        plt.show() 
+'''
 
 
 def analyze_single_res_dir(file_list, store_res):
     """ pass as argument to this function the list of the file contained into a single directory """
 
-    for f in file_list:
-        analyze_single_res_file(f, store_res)
+    for single_file in file_list:
+        analyze_single_res_file(single_file, store_res)
 
 
 def analyze_single_res_file(file1, store_res):
-    """ this function should create a new data frame for the file passed as argument
-    also pass as argument the store res object, in order to retrieve the data from the memory """
+    """ this function should create a new data frame for each filename passed as argument and must store those information
+     into the store res instance"""
 
-    # return the filaname from the path object
+    # return the file name from the path object
     filename = file1.as_posix()
     res_data_frame = pd.read_csv(filename, sep='\t')
 
 
-def begin_analysis(dir_list, dir_root):
+def begin_analysis(args_data):
     """ this is the entry point of the analysis """
 
-    # define configuration data about the result directory
+    # instantiate the root directory and the directories that contain the results
+    root_dir = args_data.root_dir
+    dir_list = args_data.dir
+
     home = expanduser("~")
     home_dir_path = Path(home)
 
-    stuck_at_dir_path = home_dir_path / dir_root
+    stuck_at_dir_path = home_dir_path / root_dir
 
     # load the golden prediction file
     gold_prediction = LoadGoldenPrediction("golden_prediction.csv", stuck_at_dir_path)
     gold_pred_df = gold_prediction.get_gpred_dataframe()
 
-    # create a new store results object that should contains the informations about the dataframe received
+    # create a new store results object that should contains the information about the data frame received
     # store_results = StoreResults(gold_pred_df)
 
     # check if the result directories exists
@@ -60,19 +64,37 @@ def begin_analysis(dir_list, dir_root):
     else:
         print("the path specified is not valid")
         return
-    
+
+
+def arguments_information(args_data):
+    # parse the command line arguments
+    args_data = arg_parser.parse_args()
+    dir_list = args_data.dir
+    root_dir = args_data.root_dir
+
+    print("the root dir passed as argument is ", root_dir)
+
+    if dir_list is not None:
+
+        if len(dir_list) != 0:
+            for d in dir_list:
+                print("dir: ", d)
+        else:
+            print("the list of dir is empty")
+
+    else:
+        print("the dir list has not been defined")
+
 
 if __name__ == "__main__":
-
     arg_parser = argparse.ArgumentParser()
 
     arg_parser.add_argument("root_dir", help="<root-dir> set the root directory taken as starting point for all the "
                                              "evaluation")
     arg_parser.add_argument("--dir", nargs="+", help="<--dir> set the list of directory", required=True)
 
-    # parse the command line arguments
-    arg = arg_parser.parse_args()
-    dir_list = arg_parser.dir
-    root_dir = arg_parser.root_dir
+    # define the arguments
+    args = arg_parser.parse_args()
+    arguments_information(args)
 
-    begin_analysis()
+    # begin_analysis(args)

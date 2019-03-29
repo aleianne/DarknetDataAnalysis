@@ -1,11 +1,19 @@
 from loadFile import LoadFile
 
 import pandas as pd
+import os
 
-# this function split the image name in order to extract the name from the
-def image_renaming(name):
-    splits = name.split('.')
-    return splits[0]
+
+def del_ext_suffix(name):
+    """ delete the filename extension """
+
+    filename = name
+    ext = "init"
+
+    while len(ext) != 0:
+        filename, ext = os.path.splitext(ext)
+
+    return filename
 
 
 class LoadGoldenPrediction(LoadFile):
@@ -15,20 +23,20 @@ class LoadGoldenPrediction(LoadFile):
         self.gold_pred_df = None
     
     def load_data_frame(self):
-        exists = super(LoadGoldenPrediction, self).check_file()
+        """ this method load the data frame from the file name specified into the constructor """
 
-        if exists:
+        if super(LoadGoldenPrediction, self).check_file():
             print("the file exists")
         else:
-            print("the file doesn't exists")
-            return 
+            # if is not possible to find the golden prediction exception throw a new FileNotFoundError
+            raise FileNotFoundError
 
         # load the new data frame that contains the golden predictions
-        filepath = self.filepath.as_posix()
-        # load the golden prediction file
-        self.gold_pred_df = pd.read_csv(filepath, sep='\t')
+        self.gold_pred_df = pd.read_csv(self.filepath, sep='\t')
+
         # rename the image name column
-        self.gold_pred_df['image name'] = self.gold_pred_df['image name'].map(image_renaming)
+        self.gold_pred_df['image name'] = self.gold_pred_df['image name'].map(del_ext_suffix)
+
         # set the image name as the index of the data frame in order to speed up the image retrieval
         self.gold_pred_df = self.gold_pred_df.set_index('image name')
 
