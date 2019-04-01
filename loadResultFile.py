@@ -12,9 +12,14 @@ class LoadResultFile:
 
         if self.df is None:
 
-            # load the information stored into the file into a new data frame
-            self.df = pd.read_csv(self.filepath, sep="\t")
+            if self.filepath.exists() and self.filepath.is_file():
+                # load the information stored into the file into a new data frame
+                self.df = pd.read_csv(self.filepath, sep="\t")
+            else:
+                raise FileNotFoundError
 
+
+    def get_result_data_frame(self):
         return self.df
 
 

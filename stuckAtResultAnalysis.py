@@ -1,5 +1,6 @@
 from classification import Classification
 from utils.constant import MARGIN_THRESHOLD
+from utils.utilFunction import del_ext_suffix
 from loadResultFile import LoadResultFile
 from pathlib import Path
 
@@ -55,12 +56,30 @@ class StuckAtResultAnalysis:
         for file in self.result_files:
             # for each file contained into the list, load the data into a new data frame
             res_file = LoadResultFile(file)
-            res_df = res_file.load_new_data_frame()
+            res_file.load_new_data_frame()
+            df = res_file.get_result_data_frame()
 
+            # get the correct label
+            correct_label = self.get_correct_label(file)
 
+            # begin to classify the data frame retrieved from the result file
+            self.result_clf.update_classification_df(df, correct_label)
 
+    def get_correct_label(self, file):
+        # check if the name is a Path instance or a simple string
+        file_s = ""
+        if isinstance(file, Path):
+            file_s = file.as_posix()
+        else:
+            file_s = file
+
+        # delete the extension from the filename
+        image_name = del_ext_suffix(file_s)
+
+        return self.golden_pred_df.loc[image_name]
 
     def get_result_files(self):
         return self.result_files
+
 
 

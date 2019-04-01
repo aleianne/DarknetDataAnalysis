@@ -24,50 +24,42 @@ class Classification:
 
         # cp means correct prediction, bp means bad prediction, wp means wrong prediction
 
-        # define the index to be used into the data frame
-        df_index = ('correct_p', 'bad_p', 'wrong_p')
-        df_columns = [23, 24, 25, 26, 27, 28, 29, 30]
+        # define a new multindex for the columns
+        columns = pd.MultiIndex.from_product([['stuck-at-0', 'stuck-at-1'], ['cp', 'bp', 'wp']])
+        index = [23, 24, 25, 26, 27, 28, 29, 30]
 
-        # create a new data frame that should be used to store the classification 1
-        self.sa0_df = pd.DataFrame(np.zeros((3, 8), dtype=int), index=df_index, columns=df_columns)
-        self.sa1_df = pd.DataFrame(np.zeros((3, 8), dtype=int), index=df_index, columns=df_columns)
+        self.clf_df = pd.DataFrame(np.random.randn(8, 6), index=index, columns=columns)
 
-    def update_classification(self, df_tuple, correct_label):
+    def update_classification_df(self, res_df, correct_label):
+        fault_type = ""
+        faulty_label = 0
+        margin = 0.0
+        bit = 0
 
-        # TODO probabilmente la variabile confidence score non servirà
+        # iterate the entire dataset
+        for i in res_df.index:
+            faulty_label = res_df.loc[i, 'label']
+            fault_type = res_df.loc[i, 'faulty type']
+            margin = res_df.loc[i, 'margin']
+            bit = res_df.loc[i, 'bit']
 
-        # decode the tuple passed as argument
-        wrong_label = df_tuple['label']
-        bit = df_tuple['bit']
-        confidence_score = df_tuple['confidence score']
-        margin = df_tuple['margin']
-        fault_model = df_tuple['margin']
+            if faulty_label == correct_label:
 
-        if correct_label == wrong_label:
+                if margin >= self.threshold:
+                    self.update_single_tuple(fault_type, bit, "cp")
+                else:
+                    self.update_single_tuple(fault_type, bit, "bp")
 
-            if margin > self.threshold:
-                self.update_single_tuple(fault_model, 'correct_p', bit)
             else:
-                self.update_single_tuple(fault_model, 'bad_p', bit)
 
-        else:
-            self.update_single_tuple(fault_model, 'wrong_p', bit)
+                self.update_single_tuple(fault_type, bit, "wp")
 
-    def update_single_tuple(self, model_type, index, col):
+    def update_single_tuple(self, fault_type, bit, clf_value):
         """ this method should update the frequency """
 
-        df = self.get_classification_df(model_type)
-
-        p_value = df.loc[index, col]
+        p_value = self.clf_df.loc[bit, (fault_type, clf_value)]
         p_value += 1
-        df.set_value(index, col, p_value)
+        self.clf_df.at[bit, (fault_type, clf_value)] = p_value
 
-    def get_classification_df(self, model_type):
-        """ return the correct data frame """
-
-        if model_type == "stuck-at-1":
-            return self.sa1_df
-        elif model_type == "stuck-at-0":
-            return self.sa0_df
-
-        raise WrongFaultModelException
+    def get_classification_df(self):
+        return self.clf
