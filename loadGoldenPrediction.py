@@ -7,8 +7,8 @@ import pandas as pd
 class LoadGoldenPrediction(LoadFile):
     """ this class should load the golden prediction file into a new data frame """
 
-    def __init__(self, filename, path):
-        super(LoadGoldenPrediction, self).__init__(filename, path)
+    def __init__(self, filename):
+        super(LoadGoldenPrediction, self).__init__(filename)
         self.gold_pred_df = None
     
     def load_data_frame(self):
@@ -21,7 +21,7 @@ class LoadGoldenPrediction(LoadFile):
             raise FileNotFoundError
 
         # load the new data frame that contains the golden predictions
-        self.gold_pred_df = pd.read_csv(self.filepath, sep='\t')
+        self.gold_pred_df = pd.read_csv(self.filename, sep='\t')
 
         # rename the image name column
         self.gold_pred_df['image name'] = self.gold_pred_df['image name'].map(del_ext_suffix)

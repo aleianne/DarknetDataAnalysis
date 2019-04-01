@@ -3,21 +3,18 @@ from pathlib import Path
 
 class LoadFile:
 
-    def __init__(self, filename, path):
+    def __init__(self, filename):
 
-        if isinstance(path, Path):
-            self.path = path
-        elif isinstance(path, str):
-            self.path = Path(path)
+        if isinstance(filename, Path):
+            self.filename = filename
+        elif isinstance(filename, str):
+            self.filename = Path(filename)
         else:
             raise Exception("the type of object path ins not known")
 
-        self.filename = filename
-        self.file_path = self.path / filename
-
     def check_file(self):
 
-        if self.file_path.exists() and self.file_path.is_file():
+        if self.filename.exists() and self.filename.is_file():
             return True
         else: 
             return False

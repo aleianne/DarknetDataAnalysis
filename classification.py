@@ -60,4 +60,4 @@ class Classification:
         self.clf_df.at[bit, (fault_type, clf_value)] = p_value
 
     def get_classification_df(self):
-        return self.clf
+        return self.clf_df

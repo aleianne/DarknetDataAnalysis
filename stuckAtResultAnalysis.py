@@ -32,14 +32,18 @@ class StuckAtResultAnalysis:
 
             # check if the directory exists
             if directory_path.exists() and directory_path.is_dir():
-                file_list = [file for file in directory_path.iterdir() if self.check_extenstion(file, ext)]
+                file_list = [file for file in directory_path.iterdir() if self.check_extension(file, ext)]
                 # add the files contained into the directory into the result file list
                 if len(file_list) != 0:
                     self.result_files.extend(file_list)
             else:
                 print("impossible to load the directory: ", directory_path.as_posix())
 
-    def check_extenstion(self, filename, extension):
+    def print_all_file(self):
+        for file in self.result_files:
+            print("file: ", file.as_posix)
+
+    def check_extension(self, filename, extension):
         # check if the filename passed as argument is a Path instance
         if not isinstance(filename, Path):
             if isinstance(filename, str):

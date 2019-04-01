@@ -4,6 +4,7 @@ from pathlib import Path
 from os.path import expanduser
 from loadGoldenPrediction import LoadGoldenPrediction
 from loadResultFile import LoadResultFile
+from stuckAtResultAnalysis import StuckAtResultAnalysis
 
 
 '''def create_new_plot():
@@ -34,19 +35,19 @@ def begin_analysis(args_data):
     """ this is the entry point of the analysis """
 
     # instantiate the root directory and the directories that contain the results
-    root_dir = args_data.root_dir
-    dir_list = args_data.dir
-
-    home = expanduser("~")
-    home_dir_path = Path(home)
-
-    stuck_at_dir_path = home_dir_path / root_dir
-
-    # load the golden prediction file
-    gold_prediction = LoadGoldenPrediction("golden_prediction.csv", stuck_at_dir_path)
-    gold_pred_df = gold_prediction.get_gold_pred_data_frame()
-
-    analyzer = AnalyzeResults(stuck_at_dir_path, dir_list, gold_pred_df)
+    # root_dir = args_data.root_dir
+    # dir_list = args_data.dir
+    #
+    # home = expanduser("~")
+    # home_dir_path = Path(home)
+    #
+    # stuck_at_dir_path = home_dir_path / root_dir
+    #
+    # # load the golden prediction file
+    # gold_prediction = LoadGoldenPrediction("golden_prediction.csv", stuck_at_dir_path)
+    # gold_pred_df = gold_prediction.get_gold_pred_data_frame()
+    #
+    # analyzer = AnalyzeResults(stuck_at_dir_path, dir_list, gold_pred_df)
 
     '''# check if the result directories exists
     if stuck_at_dir_path.exists() and stuck_at_dir_path.is_dir():
@@ -75,8 +76,10 @@ def arguments_information(args_data):
     dir_list = args_data.dir
     output_folder = args_data.output
     fault_model = args_data.fault_model
+    golden_prediction = args_data.gold
 
     # print the information about the output folder and the fault model to be used
+    print("the golden prediction file is", golden_prediction)
     print("the output folder specified is ", output_folder)
     print("the fault model specified is ", fault_model)
 
@@ -92,11 +95,24 @@ def arguments_information(args_data):
         print("the dir list has not been defined")
 
 
+def begin_stuck_at_fault_analysis(args_data):
+    # load the golden prediction data frame
+    gold_pred_path = Path(args_data.gold)
+
+    gold_prediction_df = LoadGoldenPrediction(gold_pred_path)
+    fault_analizer = StuckAtResultAnalysis(args_data.dir, gold_prediction_df)
+
+    # begin to load the files
+    fault_analizer.load_files()
+    fault_analizer.print_all_file()
+
+
 if __name__ == "__main__":
 
     # decode the argument passed to the script
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("fault_model", help="specify the fault model")
+    arg_parser.add_argument("--gold", help="set the path of the golden prediction file", required=True)
     arg_parser.add_argument("--dir", nargs="+", help=" set the list of directory", required=True)
     arg_parser.add_argument("--out", help="specify the output folder for the analysis results", required=True)
 
@@ -105,7 +121,7 @@ if __name__ == "__main__":
     arguments_information(args)
 
     if args.fault_model == "stuck-at":
-        pass
+        begin_stuck_at_fault_analysis(args)
     else:
         print("the fault model specified is", args.fault_model)
         print("other fault model analysis are not yet implemented")
