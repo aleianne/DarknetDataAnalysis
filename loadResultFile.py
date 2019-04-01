@@ -18,7 +18,6 @@ class LoadResultFile:
             else:
                 raise FileNotFoundError
 
-
     def get_result_data_frame(self):
         return self.df
 

@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
 
-from exceptions.exceptions import WrongFaultModelException
-
 
 class Classification:
     """ this class is in charge to load and classify the tuple passed as argument """
