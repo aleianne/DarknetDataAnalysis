@@ -74,7 +74,7 @@ def arguments_information(args_data):
     # parse the command line arguments
     args_data = arg_parser.parse_args()
     dir_list = args_data.dir
-    output_folder = args_data.output
+    output_folder = args_data.out
     fault_model = args_data.fault_model
     golden_prediction = args_data.gold
 
