@@ -41,7 +41,7 @@ class StuckAtResultAnalysis:
 
     def print_all_file(self):
         for file in self.result_files:
-            print("file: ", file.as_posix)
+            print("file: ", file.as_posix())
 
     def check_extension(self, filename, extension):
         # check if the filename passed as argument is a Path instance
