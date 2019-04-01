@@ -1,11 +1,9 @@
-import pandas as pd
 import argparse
 
 from pathlib import Path
 from os.path import expanduser
-from mainDirReader import MainDirectoryReader
 from loadGoldenPrediction import LoadGoldenPrediction
-from storeResults import StoreResults
+from loadResultFile import LoadResultFile
 
 
 '''def create_new_plot():
@@ -16,20 +14,20 @@ from storeResults import StoreResults
 '''
 
 
-def analyze_single_res_dir(file_list, store_res):
+def analyze_single_res_dir(dir_path, file_list):
     """ pass as argument to this function the list of the file contained into a single directory """
 
     for single_file in file_list:
-        analyze_single_res_file(single_file, store_res)
+        analyze_single_res_file(single_file, dir_path)
 
 
-def analyze_single_res_file(file1, store_res):
+def analyze_single_res_file(file1, path):
     """ this function should create a new data frame for each filename passed as argument and must store those information
-     into the store res instance"""
+     into the store res instance """
 
-    # return the file name from the path object
-    filename = file1.as_posix()
-    res_data_frame = pd.read_csv(filename, sep='\t')
+    # load the file
+    res_file = LoadResultFile(file1, path)
+    df = res_file.res_data_frame
 
 
 def begin_analysis(args_data):
@@ -46,12 +44,11 @@ def begin_analysis(args_data):
 
     # load the golden prediction file
     gold_prediction = LoadGoldenPrediction("golden_prediction.csv", stuck_at_dir_path)
-    gold_pred_df = gold_prediction.get_gpred_dataframe()
+    gold_pred_df = gold_prediction.get_gold_pred_data_frame()
 
-    # create a new store results object that should contains the information about the data frame received
-    store_results = StoreResults(gold_pred_df)
+    analyzer = AnalyzeResults(stuck_at_dir_path, dir_list, gold_pred_df)
 
-    # check if the result directories exists
+    '''# check if the result directories exists
     if stuck_at_dir_path.exists() and stuck_at_dir_path.is_dir():
 
         for single_path in dir_list:
@@ -62,23 +59,28 @@ def begin_analysis(args_data):
             dir_reader = MainDirectoryReader(new_path)
             file_list = dir_reader.get_file_list()
 
-            # pass the file list contained into the directory to the analyze dir function
+            # pass the file list contained into the directory
             analyze_single_res_dir(file_list, store_results)
 
     else:
         print("the path specified is not valid")
         return
+        
+    '''
 
 
 def arguments_information(args_data):
     # parse the command line arguments
     args_data = arg_parser.parse_args()
     dir_list = args_data.dir
-    root_dir = args_data.root_dir
+    output_folder = args_data.output
+    fault_model = args_data.fault_model
 
-    print("the root dir passed as argument is ", root_dir)
+    # print the information about the output folder and the fault model to be used
+    print("the output folder specified is ", output_folder)
+    print("the fault model specified is ", fault_model)
 
-    if dir_list is not None:
+    if dir_list is not None or len(dir_list) == 0:
 
         if len(dir_list) != 0:
             for d in dir_list:
@@ -91,14 +93,21 @@ def arguments_information(args_data):
 
 
 if __name__ == "__main__":
-    arg_parser = argparse.ArgumentParser()
 
-    arg_parser.add_argument("root_dir", help="<root-dir> set the root directory taken as starting point for all the "
-                                             "evaluation")
-    arg_parser.add_argument("--dir", nargs="+", help="<--dir> set the list of directory", required=True)
+    # decode the argument passed to the script
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("fault_model", help="specify the fault model")
+    arg_parser.add_argument("--dir", nargs="+", help=" set the list of directory", required=True)
+    arg_parser.add_argument("--out", help="specify the output folder for the analysis results", required=True)
 
     # define the arguments
     args = arg_parser.parse_args()
     arguments_information(args)
+
+    if args.fault_model == "stuck-at":
+        pass
+    else:
+        print("the fault model specified is", args.fault_model)
+        print("other fault model analysis are not yet implemented")
 
     # begin_analysis(args)
