@@ -26,6 +26,12 @@ class Classification:
 
         self.clf_df = pd.DataFrame(np.zeros((8, 6), dtype=int), index=index, columns=columns)
 
+        # define a second data frame that contains all the wrong predicted label, differentiated for each single bit
+        columns = np.arange(0, 10)
+        index = np.arange(23, 31)
+
+        self.wrong_labels = pd.DataFrame(np.zeros((8, 10), dtype=int), index=index, columns=columns)
+
     def update_classification_df(self, res_df, correct_label):
         fault_type = ""
         faulty_label = 0
@@ -56,6 +62,17 @@ class Classification:
         p_value = self.clf_df.loc[bit, (fault_type, clf_value)]
         p_value += 1
         self.clf_df.at[bit, (fault_type, clf_value)] = p_value
+
+    def update_wrong_label_data_frame(self, bit, label):
+        """ this method update the wrong label data frame """
+
+        # update a the wrong label prediction data frame
+        p_value = self.wrong_labels.loc[bit, label]
+        p_value += 1
+        self.wrong_labels.at[bit, label] = p_value
+
+    def get_wrong_df(self):
+        return self.wrong_labels
 
     def get_classification_df(self):
         return self.clf_df
