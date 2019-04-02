@@ -66,6 +66,7 @@ class StuckAtResultAnalysis:
         print("analyzed file ", file.as_posix())
         print("analysis terminated in ", end - start, " seconds")
 
+        print(classification_df)
 
     def print_all_files(self):
 
