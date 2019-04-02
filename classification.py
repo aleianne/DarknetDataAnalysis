@@ -35,7 +35,7 @@ class Classification:
         # iterate the entire data frame
         for i in res_df.index:
             faulty_label = res_df.loc[i, 'label']
-            fault_type = res_df.loc[i, 'faulty type']
+            fault_type = res_df.loc[i, 'fault type']
             margin = res_df.loc[i, 'margin']
             bit = res_df.loc[i, 'bit']
 

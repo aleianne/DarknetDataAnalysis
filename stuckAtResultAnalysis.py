@@ -54,7 +54,7 @@ class StuckAtResultAnalysis:
         df = res_file.get_result_data_frame()
 
         # get the correct label
-        correct_label = self._get_correct_label(file)
+        correct_label = 5
 
         # begin to classify the data frame retrieved from the result file
         self.result_clf.update_classification_df(df, correct_label)
