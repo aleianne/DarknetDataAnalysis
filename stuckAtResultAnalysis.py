@@ -3,8 +3,10 @@ from utils.constant import MARGIN_THRESHOLD
 from utils.utilFunction import del_ext_suffix
 from loadResultFile import LoadResultFile
 from pathlib import Path
-
 from os.path import expanduser
+
+import timeit
+import random
 
 
 class StuckAtResultAnalysis:
@@ -39,12 +41,38 @@ class StuckAtResultAnalysis:
             else:
                 print("impossible to load the directory: ", directory_path.as_posix())
 
+    def debug(self):
+
+        print("begin to analyze the data")
+        file = random.choice(self.result_files)
+
+        start = timeit.timeit()
+
+        # for each file contained into the list, load the data into a new data frame
+        res_file = LoadResultFile(file)
+        res_file.load_new_data_frame()
+        df = res_file.get_result_data_frame()
+
+        # get the correct label
+        correct_label = self._get_correct_label(file)
+
+        # begin to classify the data frame retrieved from the result file
+        self.result_clf.update_classification_df(df, correct_label)
+
+        end = timeit.timeit()
+
+        print("analyzed file ", file.as_posix())
+        print("analysis terminated in ", end - start, " seconds")
+
+
     def print_all_files(self):
 
         for file in self.result_files:
             print("file: ", file.as_posix())
 
     def analyze_single_file(self):
+
+        start = timeit.timeit()
 
         for file in self.result_files:
             # for each file contained into the list, load the data into a new data frame
@@ -57,6 +85,10 @@ class StuckAtResultAnalysis:
 
             # begin to classify the data frame retrieved from the result file
             self.result_clf.update_classification_df(df, correct_label)
+
+        end = timeit.timeit()
+
+        print("analysis terminated in ", end - start, " seconds")
 
     def get_result_file(self):
         return self.result_files

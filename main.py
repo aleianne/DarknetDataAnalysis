@@ -103,7 +103,8 @@ def begin_stuck_at_fault_analysis(args_data):
 
     # begin to load the files
     fault_analizer.load_files()
-    fault_analizer.print_all_files()
+    # fault_analizer.print_all_files()
+    fault_analizer.debug()
 
 
 if __name__ == "__main__":
