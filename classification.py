@@ -21,8 +21,6 @@ class Classification:
         '''
 
         # cp means correct prediction, bp means bad prediction, wp means wrong prediction
-
-        # define a new multindex for the columns
         columns = pd.MultiIndex.from_product([['stuck-at-0', 'stuck-at-1'], ['cp', 'bp', 'wp']])
         index = [23, 24, 25, 26, 27, 28, 29, 30]
 
@@ -34,7 +32,7 @@ class Classification:
         margin = 0.0
         bit = 0
 
-        # iterate the entire dataset
+        # iterate the entire data frame
         for i in res_df.index:
             faulty_label = res_df.loc[i, 'label']
             fault_type = res_df.loc[i, 'faulty type']

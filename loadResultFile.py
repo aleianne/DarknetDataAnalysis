@@ -9,6 +9,7 @@ class LoadResultFile:
         self.df = None
 
     def load_new_data_frame(self):
+        """ this method should read the input file and load the data """
 
         if self.df is None:
 

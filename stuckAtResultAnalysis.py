@@ -32,18 +32,36 @@ class StuckAtResultAnalysis:
 
             # check if the directory exists
             if directory_path.exists() and directory_path.is_dir():
-                file_list = [file for file in directory_path.iterdir() if self.check_extension(file, ext)]
+                file_list = [file for file in directory_path.iterdir() if self._check_extension(file, ext)]
                 # add the files contained into the directory into the result file list
                 if len(file_list) != 0:
                     self.result_files.extend(file_list)
             else:
                 print("impossible to load the directory: ", directory_path.as_posix())
 
-    def print_all_file(self):
+    def print_all_files(self):
+
         for file in self.result_files:
             print("file: ", file.as_posix())
 
-    def check_extension(self, filename, extension):
+    def analyze_single_file(self):
+
+        for file in self.result_files:
+            # for each file contained into the list, load the data into a new data frame
+            res_file = LoadResultFile(file)
+            res_file.load_new_data_frame()
+            df = res_file.get_result_data_frame()
+
+            # get the correct label
+            correct_label = self._get_correct_label(file)
+
+            # begin to classify the data frame retrieved from the result file
+            self.result_clf.update_classification_df(df, correct_label)
+
+    def get_result_file(self):
+        return self.result_files
+
+    def _check_extension(self, filename, extension):
         # check if the filename passed as argument is a Path instance
         if not isinstance(filename, Path):
             if isinstance(filename, str):
@@ -55,23 +73,9 @@ class StuckAtResultAnalysis:
 
         return False
 
-    def analyze_single_file(self):
-
-        for file in self.result_files:
-            # for each file contained into the list, load the data into a new data frame
-            res_file = LoadResultFile(file)
-            res_file.load_new_data_frame()
-            df = res_file.get_result_data_frame()
-
-            # get the correct label
-            correct_label = self.get_correct_label(file)
-
-            # begin to classify the data frame retrieved from the result file
-            self.result_clf.update_classification_df(df, correct_label)
-
-    def get_correct_label(self, file):
+    def _get_correct_label(self, file):
         # check if the name is a Path instance or a simple string
-        file_s = ""
+        file_s = None
         if isinstance(file, Path):
             file_s = file.as_posix()
         else:
@@ -81,9 +85,6 @@ class StuckAtResultAnalysis:
         image_name = del_ext_suffix(file_s)
 
         return self.golden_pred_df.loc[image_name]
-
-    def get_result_files(self):
-        return self.result_files
 
 
 

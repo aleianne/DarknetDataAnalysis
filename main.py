@@ -1,7 +1,6 @@
 import argparse
 
 from pathlib import Path
-from os.path import expanduser
 from loadGoldenPrediction import LoadGoldenPrediction
 from loadResultFile import LoadResultFile
 from stuckAtResultAnalysis import StuckAtResultAnalysis
@@ -104,7 +103,7 @@ def begin_stuck_at_fault_analysis(args_data):
 
     # begin to load the files
     fault_analizer.load_files()
-    fault_analizer.print_all_file()
+    fault_analizer.print_all_files()
 
 
 if __name__ == "__main__":
