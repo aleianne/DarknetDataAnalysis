@@ -61,6 +61,8 @@ class StuckAtResultAnalysis:
 
         end = timeit.timeit()
 
+        classification_df = self.result_clf.get_classification_df()
+
         print("analyzed file ", file.as_posix())
         print("analysis terminated in ", end - start, " seconds")
 

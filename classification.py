@@ -24,7 +24,7 @@ class Classification:
         columns = pd.MultiIndex.from_product([['stuck-at-0', 'stuck-at-1'], ['cp', 'bp', 'wp']])
         index = [23, 24, 25, 26, 27, 28, 29, 30]
 
-        self.clf_df = pd.DataFrame(np.random.randn(8, 6), index=index, columns=columns)
+        self.clf_df = pd.DataFrame(np.zeros((8, 6), dtype=int), index=index, columns=columns)
 
     def update_classification_df(self, res_df, correct_label):
         fault_type = ""
