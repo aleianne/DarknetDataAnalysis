@@ -130,15 +130,16 @@ class StuckAtResultAnalysis:
         return False
 
     def _get_correct_label(self, file):
-        # check if the name is a Path instance or a simple string
-        file_s = None
+        filepath = None
         if isinstance(file, Path):
-            file_s = file.as_posix()
-        else:
-            file_s = file
+            filepath = file
+        elif isinstance(file, str):
+            filepath = Path(file)
+
+        f_name = filepath.stem
 
         # delete the extension from the filename
-        image_name = del_ext_suffix(file_s)
+        image_name = del_ext_suffix(f_name)
 
         return self.golden_pred_df.loc[image_name]
 
