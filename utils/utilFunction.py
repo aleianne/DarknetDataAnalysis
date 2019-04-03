@@ -8,6 +8,6 @@ def del_ext_suffix(name):
     ext = "init"
 
     while len(ext) != 0:
-        filename, ext = os.path.splitext(ext)
+        filename, ext = os.path.splitext(filename)
 
     return filename
