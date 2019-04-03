@@ -99,7 +99,7 @@ def begin_stuck_at_fault_analysis(args_data):
     gold_prediction_loader = LoadGoldenPrediction(args_data.gold)
     gold_prediction_loader.load_data_frame(1)
     fault_analyzer = StuckAtResultAnalysis(args_data.dir, gold_prediction_loader.get_gold_pred_data_frame())
-    gold_prediction_loader.print_golden_prediction_df()
+    # gold_prediction_loader.print_golden_prediction_df()
     # fault_analyzer = StuckAtResultAnalysis(args_data.dir, None)
 
     # begin to load the files
