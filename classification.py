@@ -32,7 +32,7 @@ class Classification:
 
         self.wrong_labels = pd.DataFrame(np.zeros((8, 10), dtype=int), index=index, columns=columns)
 
-    def update_classification_df(self, res_df, correct_label):
+    def classify_data_frame(self, res_df, correct_label):
         fault_type = ""
         faulty_label = 0
         margin = 0.0
@@ -54,10 +54,18 @@ class Classification:
 
             else:
 
+                self.update_wrong_label_data_frame(bit, faulty_label)
+
+                # update the classification data frame
                 self.update_single_tuple(fault_type, bit, "wp")
 
     def update_single_tuple(self, fault_type, bit, clf_value):
         """ this method should update the frequency """
+
+        # check if the label are between the range of 0 and 10
+        if bit < 23 or bit > 30:
+            print("impossible to store the information into the correct bit")
+            raise Exception
 
         p_value = self.clf_df.loc[bit, (fault_type, clf_value)]
         p_value += 1
@@ -65,6 +73,14 @@ class Classification:
 
     def update_wrong_label_data_frame(self, bit, label):
         """ this method update the wrong label data frame """
+
+        if bit < 23 or bit > 30:
+            print("impossible to store the information into the correct bit")
+            raise Exception
+
+        if label < 0 or label > 9:
+            print("impossible to store the information into the correct label")
+            raise Exception
 
         # update a the wrong label prediction data frame
         p_value = self.wrong_labels.loc[bit, label]

@@ -11,7 +11,7 @@ class LoadGoldenPrediction(LoadFile):
         super(LoadGoldenPrediction, self).__init__(filename)
         self.gold_pred_df = None
     
-    def load_data_frame(self):
+    def load_data_frame(self, skiprow):
         """ this method load the data frame from the file name specified into the constructor """
 
         if super(LoadGoldenPrediction, self).check_file():
@@ -20,8 +20,11 @@ class LoadGoldenPrediction(LoadFile):
             # if is not possible to find the golden prediction exceptions throw a new FileNotFoundError
             raise FileNotFoundError
 
-        # load the new data frame that contains the golden predictions
-        self.gold_pred_df = pd.read_csv(self.filename, sep='\t')
+        # check if should be skipped some row
+        if skiprow == 0:
+            self.gold_pred_df = pd.read_csv(self.filename, sep='\t')
+        else:
+            self.gold_pred_df = pd.read_csv(self.filename, skiprows=[skiprow], sep='\t')
 
         # rename the image name column
         self.gold_pred_df['image name'] = self.gold_pred_df['image name'].map(del_ext_suffix)

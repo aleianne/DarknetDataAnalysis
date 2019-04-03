@@ -57,7 +57,7 @@ class StuckAtResultAnalysis:
         correct_label = 5
 
         # begin to classify the data frame retrieved from the result file
-        self.result_clf.update_classification_df(df, correct_label)
+        self.result_clf.classify_data_frame(df, correct_label)
 
         end = timeit.timeit()
 
@@ -87,7 +87,7 @@ class StuckAtResultAnalysis:
             correct_label = self._get_correct_label(file)
 
             # begin to classify the data frame retrieved from the result file
-            self.result_clf.update_classification_df(df, correct_label)
+            self.result_clf.classify_data_frame(df, correct_label)
 
         end = timeit.timeit()
 
