@@ -14,9 +14,7 @@ class LoadGoldenPrediction(LoadFile):
     def load_data_frame(self, skiprow=0):
         """ this method load the data frame from the file name specified into the constructor """
 
-        if super(LoadGoldenPrediction, self).check_file():
-            print("the file exists")
-        else:
+        if not super(LoadGoldenPrediction, self).check_file():
             # if is not possible to find the golden prediction throw a new FileNotFoundError
             raise FileNotFoundError
 
@@ -31,6 +29,8 @@ class LoadGoldenPrediction(LoadFile):
 
         # set the image name as the index of the data frame in order to speed up the image retrieval
         self.gold_pred_df = self.gold_pred_df.set_index('image name')
+
+        print("Golden prediction file load correctly")
 
     def print_golden_prediction_df(self):
         print(self.gold_pred_df)

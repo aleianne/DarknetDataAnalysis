@@ -87,8 +87,6 @@ class StuckAtResultAnalysis:
             # get the correct label
             correct_label = self._get_correct_label(file)
 
-            print()
-
             # begin to classify the data frame retrieved from the result file
             self.result_clf.classify_data_frame(df, correct_label)
 
