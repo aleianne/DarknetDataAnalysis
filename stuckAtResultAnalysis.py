@@ -4,6 +4,7 @@ from utils.utilFunction import del_ext_suffix
 from loadResultFile import LoadResultFile
 from pathlib import Path
 from os.path import expanduser
+from fIlenameGenerator import FilenameGenerator
 
 import timeit
 import random
@@ -92,6 +93,26 @@ class StuckAtResultAnalysis:
         end = timeit.timeit()
 
         print("analysis terminated in ", end - start, " seconds")
+
+    def save_data_frames_into_csv(self, outdir):
+        # get the classification data frame
+        classification_df = self.result_clf.get_classification_df()
+        wrong_label_df = self.result_clf.get_wrong_df()
+
+        if classification_df.empty:
+            print("classification data frame is empty")
+            return
+
+        if wrong_label_df.empty:
+            print("wrong labels data frame is empty")
+            return
+
+        # generate the filename
+        file_path_classification = FilenameGenerator('classification.csv', outdir)
+        file_path_wrong_label = FilenameGenerator('wrong_label.csv', outdir)
+
+        classification_df.to_csv(file_path_classification.get_filepath(), sep='\t')
+        wrong_label_df.to_csv(file_path_wrong_label.get_filepath(), sep='\t')
 
     def get_result_file(self):
         return self.result_files
