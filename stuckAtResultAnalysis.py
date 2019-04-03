@@ -87,6 +87,8 @@ class StuckAtResultAnalysis:
             # get the correct label
             correct_label = self._get_correct_label(file)
 
+            print()
+
             # begin to classify the data frame retrieved from the result file
             self.result_clf.classify_data_frame(df, correct_label)
 
@@ -141,7 +143,7 @@ class StuckAtResultAnalysis:
         # delete the extension from the filename
         image_name = del_ext_suffix(f_name)
 
-        return self.golden_pred_df.loc[image_name]
+        return self.golden_pred_df.loc[image_name, 'golden prediction']
 
 
 

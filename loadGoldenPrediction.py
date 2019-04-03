@@ -17,7 +17,7 @@ class LoadGoldenPrediction(LoadFile):
         if super(LoadGoldenPrediction, self).check_file():
             print("the file exists")
         else:
-            # if is not possible to find the golden prediction exceptions throw a new FileNotFoundError
+            # if is not possible to find the golden prediction throw a new FileNotFoundError
             raise FileNotFoundError
 
         # check if should be skipped some row
