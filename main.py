@@ -98,7 +98,8 @@ def begin_stuck_at_fault_analysis(args_data):
     # load the golden prediction data frame
     gold_pred_path = Path(args_data.gold)
 
-    gold_prediction_loader = LoadGoldenPrediction(gold_pred_path, 1)
+    gold_prediction_loader = LoadGoldenPrediction(gold_pred_path)
+    gold_prediction_loader.load_data_frame(1)
     fault_analyzer = StuckAtResultAnalysis(args_data.dir, gold_prediction_loader.get_gold_pred_data_frame())
     gold_prediction_loader.print_golden_prediction_df()
     # fault_analyzer = StuckAtResultAnalysis(args_data.dir, None)
