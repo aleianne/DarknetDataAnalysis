@@ -11,7 +11,7 @@ class LoadGoldenPrediction(LoadFile):
         super(LoadGoldenPrediction, self).__init__(filename)
         self.gold_pred_df = None
     
-    def load_data_frame(self, skiprow):
+    def load_data_frame(self, skiprow=0):
         """ this method load the data frame from the file name specified into the constructor """
 
         if super(LoadGoldenPrediction, self).check_file():
@@ -31,6 +31,9 @@ class LoadGoldenPrediction(LoadFile):
 
         # set the image name as the index of the data frame in order to speed up the image retrieval
         self.gold_pred_df = self.gold_pred_df.set_index('image name')
+
+    def print_golden_prediction_df(self):
+        print(self.gold_pred_df)
 
     def get_gold_pred_data_frame(self):
         return self.gold_pred_df
