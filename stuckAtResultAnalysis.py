@@ -74,7 +74,7 @@ class StuckAtResultAnalysis:
         for file in self.result_files:
             print("file: ", file.as_posix())
 
-    def analyze_single_file(self):
+    def analyze_stuck_at_faults(self):
 
         start = timeit.timeit()
 
