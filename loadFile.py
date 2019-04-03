@@ -1,14 +1,15 @@
 from pathlib import Path
+from os.path import expanduser
 
 
 class LoadFile:
 
     def __init__(self, filename):
 
-        if isinstance(filename, Path):
-            self.filename = filename
-        elif isinstance(filename, str):
-            self.filename = Path(filename)
+        home_path = Path(expanduser('~'))
+
+        if isinstance(filename, str):
+            self.filename = home_path / filename
         else:
             raise Exception("the type of object path ins not known")
 
