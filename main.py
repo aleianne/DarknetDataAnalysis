@@ -2,7 +2,7 @@ import argparse
 
 from pathlib import Path
 from loadGoldenPrediction import LoadGoldenPrediction
-from loadResultFile import LoadResultFile
+from loadDataFrame import LoadDataFrame
 from stuckAtResultAnalysis import StuckAtResultAnalysis
 
 
@@ -26,7 +26,7 @@ def analyze_single_res_file(file1, path):
      into the store res instance """
 
     # load the file
-    res_file = LoadResultFile(file1, path)
+    res_file = LoadDataFrame(file1, path)
     df = res_file.res_data_frame
 
 
@@ -97,7 +97,7 @@ def arguments_information(args_data):
 def begin_stuck_at_fault_analysis(args_data):
 
     gold_prediction_loader = LoadGoldenPrediction(args_data.gold)
-    gold_prediction_loader.load_data_frame(1)
+    gold_prediction_loader.load_golden_prediction_df(1)
     fault_analyzer = StuckAtResultAnalysis(args_data.dir, gold_prediction_loader.get_gold_pred_data_frame())
     # gold_prediction_loader.print_golden_prediction_df()
     # fault_analyzer = StuckAtResultAnalysis(args_data.dir, None)
@@ -105,8 +105,6 @@ def begin_stuck_at_fault_analysis(args_data):
     # begin to load the files
     fault_analyzer.load_files()
     fault_analyzer.analyze_stuck_at_faults()
-    # fault_analyzer.print_all_files()
-    # fault_analyzer.debug()
 
     # save all the data frames into a file
     fault_analyzer.save_data_frames_into_csv(args_data.out)

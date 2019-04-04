@@ -1,39 +1,30 @@
-from loadFile import LoadFile
 from utils.utilFunction import del_ext_suffix
+from loadDataFrame import LoadDataFrame
 
 import pandas as pd
 
 
-class LoadGoldenPrediction(LoadFile):
+class LoadGoldenPrediction(LoadDataFrame):
     """ this class should load the golden prediction file into a new data frame """
 
-    def __init__(self, filename):
-        super(LoadGoldenPrediction, self).__init__(filename)
-        self.gold_pred_df = None
+    def __init__(self, filepath):
+        super(LoadGoldenPrediction, self).__init__(filepath)
     
-    def load_data_frame(self, skiprow=0):
+    def load_golden_prediction_df(self, skiprow=0):
         """ this method load the data frame from the file name specified into the constructor """
 
-        if not super(LoadGoldenPrediction, self).check_file():
-            # if is not possible to find the golden prediction throw a new FileNotFoundError
-            raise FileNotFoundError
-
-        # check if should be skipped some row
-        if skiprow == 0:
-            self.gold_pred_df = pd.read_csv(self.filename, sep='\t')
-        else:
-            self.gold_pred_df = pd.read_csv(self.filename, skiprows=[skiprow], sep='\t')
+        self.load_new_data_frame(skiprow)
 
         # rename the image name column
-        self.gold_pred_df['image name'] = self.gold_pred_df['image name'].map(del_ext_suffix)
+        self.df['image name'] = self.df['image name'].map(del_ext_suffix)
 
         # set the image name as the index of the data frame in order to speed up the image retrieval
-        self.gold_pred_df = self.gold_pred_df.set_index('image name')
+        self.df = self.df.set_index('image name')
 
         print("Golden prediction file load correctly")
 
     def print_golden_prediction_df(self):
-        print(self.gold_pred_df)
+        print(self.df)
 
     def get_gold_pred_data_frame(self):
-        return self.gold_pred_df
+        return self.get_result_data_frame()

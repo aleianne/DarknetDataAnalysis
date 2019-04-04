@@ -1,21 +1,26 @@
 import pandas as pd
 
+from utils.utilFunction import generate_path1
 
-class LoadResultFile:
+
+class LoadDataFrame:
     """ this class should be used in order to load a new file into to a pandas dataframe """
 
     def __init__(self, filepath):
-        self.filepath = filepath
+        self.filepath = generate_path1(filepath)
         self.df = None
 
-    def load_new_data_frame(self):
+    def load_new_data_frame(self, skiprow=0):
         """ this method should read the input file and load the data """
 
         if self.df is None:
 
             if self.filepath.exists() and self.filepath.is_file():
-                # load the information stored into the file into a new data frame
-                self.df = pd.read_csv(self.filepath, sep="\t")
+                # check if should be skipped some row
+                if skiprow == 0:
+                    self.df = pd.read_csv(self.filepath, sep='\t')
+                else:
+                    self.df = pd.read_csv(self.filepath, skiprows=[skiprow], sep='\t')
             else:
                 raise FileNotFoundError
 

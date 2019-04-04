@@ -1,10 +1,9 @@
 from classification import Classification
 from utils.constant import MARGIN_THRESHOLD
 from utils.utilFunction import del_ext_suffix
-from loadResultFile import LoadResultFile
+from loadDataFrame import LoadDataFrame
 from pathlib import Path
-from os.path import expanduser
-from fIlenameGenerator import FilenameGenerator
+from utils.utilFunction import generate_path2, generate_path1
 
 import timeit
 import random
@@ -18,16 +17,12 @@ class StuckAtResultAnalysis:
         self.result_files = []
         self.golden_pred_df = golden_pred_df
 
-        # create a new home path
-        home = expanduser("~")
-        self.home_path = Path(home)
-
     def load_files(self):
         # load into a list all the files contained into the directory
 
         for d in self.dir_list:
             # create a new path
-            directory_path = self.home_path / d
+            directory_path = generate_path2(d)
             file_list = None
 
             # define the extension
@@ -50,7 +45,7 @@ class StuckAtResultAnalysis:
         start = timeit.timeit()
 
         # for each file contained into the list, load the data into a new data frame
-        res_file = LoadResultFile(file)
+        res_file = LoadDataFrame(file)
         res_file.load_new_data_frame()
         df = res_file.get_result_data_frame()
 
@@ -78,9 +73,12 @@ class StuckAtResultAnalysis:
 
         start = timeit.timeit()
 
+        print("begin to analyze result files")
+        print("number of files to be analyzed: ", len(self.result_files))
+
         for file in self.result_files:
             # for each file contained into the list, load the data into a new data frame
-            res_file = LoadResultFile(file)
+            res_file = LoadDataFrame(file)
             res_file.load_new_data_frame()
             df = res_file.get_result_data_frame()
 
@@ -108,11 +106,11 @@ class StuckAtResultAnalysis:
             return
 
         # generate the filename
-        file_path_classification = FilenameGenerator('classification.csv', outdir)
-        file_path_wrong_label = FilenameGenerator('wrong_label.csv', outdir)
+        file_path_classification = generate_path1('classification.csv', outdir)
+        file_path_wrong_label = generate_path1('wrong_label.csv', outdir)
 
-        classification_df.to_csv(file_path_classification.get_filepath(), sep='\t')
-        wrong_label_df.to_csv(file_path_wrong_label.get_filepath(), sep='\t')
+        classification_df.to_csv(file_path_classification, sep='\t')
+        wrong_label_df.to_csv(file_path_wrong_label, sep='\t')
 
     def get_result_file(self):
         return self.result_files
@@ -131,6 +129,7 @@ class StuckAtResultAnalysis:
 
     def _get_correct_label(self, file):
         filepath = None
+
         if isinstance(file, Path):
             filepath = file
         elif isinstance(file, str):
