@@ -96,9 +96,15 @@ def arguments_information(args_data):
 
 def begin_stuck_at_fault_analysis(args_data):
 
-    gold_prediction_loader = LoadGoldenPrediction(args_data.gold)
+    dir_list = args_data.dir
+    output_dir = args_data.out
+    gold_file = args_data.gold
+
+    gold_prediction_loader = LoadGoldenPrediction(gold_file)
     gold_prediction_loader.load_golden_prediction_df(1)
-    fault_analyzer = StuckAtResultAnalysis(args_data.dir, gold_prediction_loader.get_gold_pred_data_frame())
+
+    # instantiate a new stuck at result analyzer
+    fault_analyzer = StuckAtResultAnalysis(dir_list, gold_prediction_loader.get_gold_pred_data_frame())
     # gold_prediction_loader.print_golden_prediction_df()
     # fault_analyzer = StuckAtResultAnalysis(args_data.dir, None)
 
@@ -107,7 +113,7 @@ def begin_stuck_at_fault_analysis(args_data):
     fault_analyzer.analyze_stuck_at_faults()
 
     # save all the data frames into a file
-    fault_analyzer.save_data_frames_into_csv(args_data.out)
+    fault_analyzer.save_data_frames_into_csv(output_dir)
 
 
 if __name__ == "__main__":
@@ -121,7 +127,7 @@ if __name__ == "__main__":
 
     # define the arguments
     args = arg_parser.parse_args()
-    arguments_information(args)
+    # arguments_information(args)
 
     if args.fault_model == "stuck-at":
         begin_stuck_at_fault_analysis(args)
