@@ -106,9 +106,6 @@ def print_graphics(args_data):
         return
 
 
-
-
-
 def begin_stuck_at_fault_analysis(args_data):
 
     dir_list = args_data.dir
