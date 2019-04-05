@@ -1,5 +1,5 @@
 from classification import Classification
-from utils.constant import MARGIN_THRESHOLD
+from utils.constant import MARGIN_THRESHOLD, WRONG_LABELS_FILENAME, CLASSIFICATION_FILENAME
 from utils.utilFunction import del_ext_suffix
 from loadDataFrame import LoadDataFrame
 from pathlib import Path
@@ -66,6 +66,7 @@ class StuckAtResultAnalysis:
 
     def print_all_files(self):
 
+        print("number of files to be analyzed: ", len(self.result_files))
         for file in self.result_files:
             print("file: ", file.as_posix())
 
@@ -106,8 +107,8 @@ class StuckAtResultAnalysis:
             return
 
         # generate the filename
-        file_path_classification = generate_path1('classification.csv', outdir)
-        file_path_wrong_label = generate_path1('wrong_label.csv', outdir)
+        file_path_classification = generate_path1(CLASSIFICATION_FILENAME, outdir)
+        file_path_wrong_label = generate_path1(WRONG_LABELS_FILENAME, outdir)
 
         classification_df.to_csv(file_path_classification, sep='\t')
         wrong_label_df.to_csv(file_path_wrong_label, sep='\t')

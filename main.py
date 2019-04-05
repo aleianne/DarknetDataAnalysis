@@ -74,13 +74,13 @@ def arguments_information(args_data):
     args_data = arg_parser.parse_args()
     dir_list = args_data.dir
     output_folder = args_data.out
-    fault_model = args_data.fault_model
+    operation = args_data.operation
     golden_prediction = args_data.gold
 
     # print the information about the output folder and the fault model to be used
     print("the golden prediction file is", golden_prediction)
     print("the output folder specified is ", output_folder)
-    print("the fault model specified is ", fault_model)
+    print("the operation specified is ", operation)
 
     if dir_list is not None or len(dir_list) == 0:
 
@@ -92,6 +92,21 @@ def arguments_information(args_data):
 
     else:
         print("the dir list has not been defined")
+
+
+def print_graphics(args_data):
+    dir_list = args_data.dir
+    output_dir = args_data.out
+    file_dir = None
+
+    if isinstance(dir_list, list) and len(dir_list) == 1:
+        file_dir = dir_list.pop()
+    else:
+        print("impossible to decode the dir option")
+        return
+
+
+
 
 
 def begin_stuck_at_fault_analysis(args_data):
@@ -120,17 +135,29 @@ if __name__ == "__main__":
 
     # decode the argument passed to the script
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("fault_model", help="specify the fault model")
-    arg_parser.add_argument("--gold", help="set the path of the golden prediction file", required=True)
-    arg_parser.add_argument("--dir", nargs="+", help=" set the list of directory", required=True)
-    arg_parser.add_argument("--out", help="specify the output folder for the analysis results", required=True)
+    arg_parser.add_argument("operation", help="specify the fault model")
+    arg_parser.add_argument("--gold", help="set the path of the golden prediction file")
+    arg_parser.add_argument("--dir", nargs="+", help=" set the list of directory")
+    arg_parser.add_argument("--out", help="specify the output folder for the analysis results")
 
     # define the arguments
     args = arg_parser.parse_args()
     # arguments_information(args)
 
-    if args.fault_model == "stuck-at":
-        begin_stuck_at_fault_analysis(args)
+    if args.operation == "stuck-at":
+
+        if args.dir is None or args.out is None or args.gold is None:
+            print("stuck at usage: [--dir dir_list], [--gold golden_prediction_file], [--out output dir]")
+        else:
+            begin_stuck_at_fault_analysis(args)
+
+    elif args.operation == "print_graphics":
+
+        if args.dir is None or args.out is None:
+            print("print graphics usage: [--dir dir], [--out output dir]")
+        else:
+            print_graphics(args)
+
     else:
         print("the fault model specified is", args.fault_model)
         print("other fault model analysis are not yet implemented")

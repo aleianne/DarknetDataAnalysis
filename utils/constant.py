@@ -1,1 +1,3 @@
 MARGIN_THRESHOLD = 5.0
+CLASSIFICATION_FILENAME = "classification.csv"
+WRONG_LABELS_FILENAME = "wrong_label.csv"
