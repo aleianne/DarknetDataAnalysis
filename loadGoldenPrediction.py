@@ -1,8 +1,6 @@
 from utils.utilFunction import del_ext_suffix
 from loadDataFrame import LoadDataFrame
 
-import pandas as pd
-
 
 class LoadGoldenPrediction(LoadDataFrame):
     """ this class should load the golden prediction file into a new data frame """

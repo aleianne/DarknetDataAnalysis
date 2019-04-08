@@ -7,6 +7,10 @@ class LoadDataFrame:
     """ this class should be used in order to load a new file into to a pandas dataframe """
 
     def __init__(self, filepath):
+
+        if not isinstance(filepath, str):
+            raise Exception()
+
         self.filepath = generate_path2(filepath)
         self.df = None
 

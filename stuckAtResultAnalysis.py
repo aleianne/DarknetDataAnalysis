@@ -13,20 +13,21 @@ class StuckAtResultAnalysis:
 
     def __init__(self, dir_list, golden_pred_df):
         self.dir_list = dir_list
-        self.result_clf = Classification(MARGIN_THRESHOLD)
+        self.result_classificator = Classification(MARGIN_THRESHOLD)
         self.result_files = []
+
+        # define a new instance attribute that should contains the golden prediction data frame
         self.golden_pred_df = golden_pred_df
 
     def load_files(self):
-        # load into a list all the files contained into the directory
 
+        ext = ".csv"
+
+        # load all the files contained into the directories into a list
         for d in self.dir_list:
             # create a new path
             directory_path = generate_path2(d)
             file_list = None
-
-            # define the extension
-            ext = ".csv"
 
             # check if the directory exists
             if directory_path.exists() and directory_path.is_dir():
@@ -53,11 +54,11 @@ class StuckAtResultAnalysis:
         correct_label = 5
 
         # begin to classify the data frame retrieved from the result file
-        self.result_clf.classify_data_frame(df, correct_label)
+        self.result_classificator.classify_data_frame(df, correct_label)
 
         end = timeit.timeit()
 
-        classification_df = self.result_clf.get_classification_df()
+        classification_df = self.result_classificator.get_classification_df()
 
         print("analyzed file ", file.as_posix())
         print("analysis terminated in ", end - start, " seconds")
@@ -87,7 +88,7 @@ class StuckAtResultAnalysis:
             correct_label = self._get_correct_label(file)
 
             # begin to classify the data frame retrieved from the result file
-            self.result_clf.classify_data_frame(df, correct_label)
+            self.result_classificator.classify_data_frame(df, correct_label)
 
         end = timeit.timeit()
 
@@ -95,8 +96,8 @@ class StuckAtResultAnalysis:
 
     def save_data_frames_into_csv(self, outdir):
         # get the classification data frame
-        classification_df = self.result_clf.get_classification_df()
-        wrong_label_df = self.result_clf.get_wrong_df()
+        classification_df = self.result_classificator.get_classification_df()
+        wrong_label_df = self.result_classificator.get_wrong_df()
 
         if classification_df.empty:
             print("classification data frame is empty")

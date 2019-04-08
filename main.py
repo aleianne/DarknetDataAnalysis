@@ -1,9 +1,10 @@
 import argparse
 
-from pathlib import Path
 from loadGoldenPrediction import LoadGoldenPrediction
 from loadDataFrame import LoadDataFrame
 from stuckAtResultAnalysis import StuckAtResultAnalysis
+from graphWriter import GraphWriter
+from utils.constant import CLASSIFICATION_FILENAME, WRONG_LABELS_FILENAME
 
 
 '''def create_new_plot():
@@ -104,6 +105,12 @@ def print_graphics(args_data):
     else:
         print("impossible to decode the dir option")
         return
+
+    # create a new LoadGraphicsDataFrame
+    graphics_plotter = GraphWriter()
+    graphics_plotter.load_new_data_frame_2(CLASSIFICATION_FILENAME, WRONG_LABELS_FILENAME)
+    graphics_plotter.create_new_graphics()
+    graphics_plotter.show_figures()
 
 
 def begin_stuck_at_fault_analysis(args_data):

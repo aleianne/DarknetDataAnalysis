@@ -1,3 +1,5 @@
+from loadGraphicsDataFrame import LoadGraphicsDataFrame
+
 import matplotlib.pyplot as plt
 
 
@@ -14,6 +16,18 @@ class GraphWriter:
     def load_new_data_frame(self, classification_df, wrong_label_df):
         self.classification_df = classification_df
         self.wrong_label_df = wrong_label_df
+
+    def load_new_data_frame_2(self, classification_filename, wrong_label_filename):
+        # create a new classification data frame loader
+        classficationGraphicsLoader = LoadGraphicsDataFrame(classification_filename)
+        # create a new wrong label data frame loader
+        wrongLabelGraphicsLoader = LoadGraphicsDataFrame(wrong_label_filename)
+
+        classficationGraphicsLoader.load_graphics_data_frame(0, [0, 1])
+        wrongLabelGraphicsLoader.load_graphics_data_frame(0, [0])
+
+        self.classification_df = classficationGraphicsLoader.get_graphics_data_frame()
+        self.wrong_label_df = wrongLabelGraphicsLoader.get_graphics_data_frame()
 
     def create_new_graphics(self):
 
