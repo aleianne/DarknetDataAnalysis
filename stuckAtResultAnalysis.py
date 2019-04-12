@@ -5,7 +5,7 @@ from loadDataFrame import LoadDataFrame
 from pathlib import Path
 from utils.utilFunction import generate_path2, generate_path1
 
-import timeit
+import time
 import random
 
 
@@ -44,7 +44,7 @@ class StuckAtResultAnalysis:
         print("begin to analyze the data")
         file = random.choice(self.result_files)
 
-        start = timeit.timeit()
+        start = time.time()
 
         # for each file contained into the list, load the data into a new data frame
         res_file = LoadDataFrame(file)
@@ -60,7 +60,7 @@ class StuckAtResultAnalysis:
         # begin to classify the data frame retrieved from the result file
         self.result_classificator.classify_data_frame(df, correct_label, correct_cs)
 
-        end = timeit.timeit()
+        end = time.time()
 
         classification_df = self.result_classificator.get_classification_df()
 
@@ -79,7 +79,7 @@ class StuckAtResultAnalysis:
 
     def analyze_stuck_at_faults(self):
 
-        start = timeit.timeit()
+        start = time.time()
 
         print("begin to analyze result files")
         print("number of files to be analyzed: ", len(self.result_files))
@@ -96,7 +96,7 @@ class StuckAtResultAnalysis:
             # begin to classify the data frame retrieved from the result file
             self.result_classificator.classify_data_frame(df, correct_label)
 
-        end = timeit.timeit()
+        end = time.time()
 
         print("analysis terminated in ", end - start, " seconds")
 
