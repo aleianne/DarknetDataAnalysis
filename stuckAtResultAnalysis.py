@@ -13,7 +13,7 @@ class StuckAtResultAnalysis:
 
     def __init__(self, dir_list, golden_pred_df):
         self.dir_list = dir_list
-        self.result_classificator = Classification(MARGIN_THRESHOLD)
+        self.result_classificator = Classification()
         self.result_files = []
 
         # define a new instance attribute that should contains the golden prediction data frame
