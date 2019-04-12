@@ -5,8 +5,8 @@ from loadDataFrame import LoadDataFrame
 class LoadGoldenPrediction(LoadDataFrame):
     """ this class should load the golden prediction file into a new data frame """
 
-    def __init__(self, filepath):
-        super(LoadGoldenPrediction, self).__init__(filepath)
+    def __init__(self, path):
+        super(LoadGoldenPrediction, self).__init__(path)
     
     def load_golden_prediction_df(self, skiprow=0):
         """ this method load the data frame from the file name specified into the constructor """

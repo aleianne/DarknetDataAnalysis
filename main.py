@@ -3,7 +3,6 @@ import argparse
 from loadGoldenPrediction import LoadGoldenPrediction
 from loadDataFrame import LoadDataFrame
 from stuckAtResultAnalysis import StuckAtResultAnalysis
-from graphWriter import GraphWriter
 from utils.constant import CLASSIFICATION_FILENAME, WRONG_LABELS_FILENAME
 
 
@@ -27,8 +26,8 @@ def analyze_single_res_file(file1, path):
      into the store res instance """
 
     # load the file
-    res_file = LoadDataFrame(file1, path)
-    df = res_file.res_data_frame
+    res_file = LoadDataFrame(file1)
+    # df = res_file.res_data_frame
 
 
 def begin_analysis(args_data):
@@ -107,10 +106,10 @@ def print_graphics(args_data):
         return
 
     # create a new LoadGraphicsDataFrame
-    graphics_plotter = GraphWriter()
-    graphics_plotter.load_new_data_frame_2(CLASSIFICATION_FILENAME, WRONG_LABELS_FILENAME)
-    graphics_plotter.create_new_graphics()
-    graphics_plotter.show_figures()
+    # graphics_plotter = GraphWriter()
+    # graphics_plotter.load_new_data_frame_2(CLASSIFICATION_FILENAME, WRONG_LABELS_FILENAME)
+    # graphics_plotter.create_new_graphics()
+    # graphics_plotter.show_figures()
 
 
 def begin_stuck_at_fault_analysis(args_data):
@@ -129,10 +128,11 @@ def begin_stuck_at_fault_analysis(args_data):
 
     # begin to load the files
     fault_analyzer.load_files()
-    fault_analyzer.analyze_stuck_at_faults()
-
-    # save all the data frames into a file
-    fault_analyzer.save_data_frames_into_csv(output_dir)
+    fault_analyzer.print_all_files()
+    # fault_analyzer.analyze_stuck_at_faults()
+    #
+    # # save all the data frames into a file
+    # fault_analyzer.save_data_frames_into_csv(output_dir)
 
 
 if __name__ == "__main__":

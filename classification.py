@@ -20,6 +20,17 @@ class Classification:
                 3 - if the label is not correct.   
         '''
 
+        ''' the classification logic is the following:
+        
+                SDC-1: the top ranked element predicted by the DNN is different from that predicted by its fault-free execution. 
+                This is the most critical SDC because the top ranked elemen is what is typically used for downstream processing
+                
+                SDC-10%: the confidence score of the top ranked element varies by more than +/-10% of its fault-free execution 
+                
+                SDC-20%: the confidence score of the top ranked element varies by more than +/-20% of its fault-free execution
+                
+        '''
+
         # cp means correct prediction, bp means bad prediction, wp means wrong prediction
         columns = pd.MultiIndex.from_product([['stuck-at-0', 'stuck-at-1'], ['cp', 'bp', 'wp']])
         index = [23, 24, 25, 26, 27, 28, 29, 30]

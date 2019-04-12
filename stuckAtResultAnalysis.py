@@ -65,11 +65,13 @@ class StuckAtResultAnalysis:
 
         print(classification_df)
 
-    def print_all_files(self):
+    def print_all_files(self, show=False):
+
+        if show:
+            for file in self.result_files:
+                print("file: ", file.as_posix())
 
         print("number of files to be analyzed: ", len(self.result_files))
-        for file in self.result_files:
-            print("file: ", file.as_posix())
 
     def analyze_stuck_at_faults(self):
 
