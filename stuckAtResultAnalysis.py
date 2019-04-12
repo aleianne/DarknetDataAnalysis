@@ -40,6 +40,7 @@ class StuckAtResultAnalysis:
 
     def debug(self):
 
+        print("DEBUG---")
         print("begin to analyze the data")
         file = random.choice(self.result_files)
 
@@ -53,8 +54,11 @@ class StuckAtResultAnalysis:
         # get the correct label
         correct_label = 5
 
+        # get the correct confidence score
+        correct_cs = 0.8
+
         # begin to classify the data frame retrieved from the result file
-        self.result_classificator.classify_data_frame(df, correct_label)
+        self.result_classificator.classify_data_frame(df, correct_label, correct_cs)
 
         end = timeit.timeit()
 
