@@ -64,6 +64,9 @@ class Classification:
                     self.update_sdc_data_frame(bit, fault_type, 'SDC-20')
 
     def compute_confidence_score_margin(self, correct_cs):
+
+        print("the correct cs is: ", correct_cs)
+
         # define the bound for the correct classification
         upper_bound_20 = correct_cs + 0.2
         upper_bound_10 = correct_cs + 0.1
