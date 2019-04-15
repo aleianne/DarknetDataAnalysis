@@ -53,7 +53,8 @@ class Classification:
             else:
 
                 # generate the confidence score margin
-                upper_bound_20, lower_bound_20, upper_bound_10, lower_bound_10 = self.compute_confidence_score_margin(correct_cs)
+                upper_bound_20, lower_bound_20, upper_bound_10, lower_bound_10 \
+                    = self.compute_confidence_score_margin(correct_cs)
 
                 # check if the confidence score is between a given interval
                 if confidence_score > upper_bound_10 or confidence_score < lower_bound_10:
