@@ -128,13 +128,14 @@ def begin_stuck_at_fault_analysis(args_data):
 
     # begin to load the files
     fault_analyzer.load_files()
-    fault_analyzer.debug()
+
+    # fault_analyzer.debug()
 
     # fault_analyzer.print_all_files()
-    # fault_analyzer.analyze_stuck_at_faults()
-    #
-    # # save all the data frames into a file
-    # fault_analyzer.save_data_frames_into_csv(output_dir)
+    fault_analyzer.analyze_stuck_at_faults()
+
+    # save all the data frames into a file
+    fault_analyzer.save_data_frames_into_csv(output_dir)
 
 
 if __name__ == "__main__":

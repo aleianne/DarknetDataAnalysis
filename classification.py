@@ -52,11 +52,36 @@ class Classification:
 
             else:
 
+                # generate the confidence score margin
+                upper_bound_20, lower_bound_20, upper_bound_10, lower_bound_10 = self.compute_confidence_score_margin(correct_cs)
+
                 # check if the confidence score is between a given interval
-                if confidence_score > correct_cs + 10 or confidence_score < correct_cs -10:
+                if confidence_score > upper_bound_10 or confidence_score < lower_bound_10:
                     self.update_sdc_data_frame(bit, fault_type, 'SDC-10')
-                elif confidence_score > correct_cs + 20 or confidence_score < correct_cs -20:
+
+                if confidence_score > upper_bound_20 or confidence_score < lower_bound_20:
                     self.update_sdc_data_frame(bit, fault_type, 'SDC-20')
+
+    def compute_confidence_score_margin(self, correct_cs):
+        # define the bound for the correct classification
+        upper_bound_20 = correct_cs + 0.2
+        upper_bound_10 = correct_cs + 0.1
+        lower_bound_20 = correct_cs - 0.2
+        lower_bound_10 = correct_cs - 0.1
+
+        if upper_bound_20 > 1.0:
+            upper_bound_20 = 1.0
+
+        if lower_bound_20 < 0.0:
+            lower_bound_20 = 0.0
+
+        if upper_bound_10 > 1.0:
+            upper_bound_10 = 1.0
+
+        if lower_bound_20 < 0.0:
+            lower_bound_20 = 0.0
+
+        return upper_bound_20, lower_bound_20, upper_bound_10, lower_bound_10
 
     def update_sdc_data_frame(self, bit, fault_type, sdc_type):
         """ this method should update the data frame in order to store the fault information"""
