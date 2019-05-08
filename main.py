@@ -3,7 +3,6 @@ import argparse
 from loadGoldenPrediction import LoadGoldenPrediction
 from loadDataFrame import LoadDataFrame
 from stuckAtResultAnalysis import StuckAtResultAnalysis
-from utils.constant import CLASSIFICATION_FILENAME, WRONG_LABELS_FILENAME
 
 
 '''def create_new_plot():
@@ -82,13 +81,13 @@ def arguments_information(args_data):
     print("the output folder specified is ", output_folder)
     print("the operation specified is ", operation)
 
-    if dir_list is not None or len(dir_list) == 0:
+    if dir_list is not None:
 
         if len(dir_list) != 0:
             for d in dir_list:
                 print("dir: ", d)
         else:
-            print("the list of dir is empty")
+            print("the list of directory is empty")
 
     else:
         print("the dir list has not been defined")
